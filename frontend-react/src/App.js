@@ -7,15 +7,6 @@ class App extends Component {
       <Chatroom/>
     );
   }
-  /*componentDidMount() {
-    fetch('/api/v1/messages/').then((res) => {
-      return res.json();
-    }).then((res) => {
-      this.setState({res});
-    }).catch((err) => {
-      this.setState({err});
-    });
-  }*/
 }
 
 export default App;

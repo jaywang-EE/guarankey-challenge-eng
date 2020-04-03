@@ -27,3 +27,11 @@ To see code changes, rebuild by adding `--build` when starting
     docker-compose up --build <backend or fullstack>
 
 If you run into issues connecting to the db on startup, try restarting (without the `-v` flag).
+
+
+
+## User Stories
+- As a user, I want to log in to the chat room, so that I can see my missed messages since last logout.
+- As a user, I want to send messages, so that everyone else in the room can see my messages.
+- As a user, I want to see all the messages in the chat room in real-time.
+- As a user, I want to see how many users and who are they in the same chat room with me.
