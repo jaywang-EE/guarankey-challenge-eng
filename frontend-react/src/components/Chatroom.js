@@ -9,7 +9,7 @@ class Chatroom extends Component{
     this.state = {
       message:"",
       messageList:[],
-      guestname:"guest_"+this.makeid(),
+      guestname:"guest_",
       username:"",
       userList:[],
       currentRoom:"",
