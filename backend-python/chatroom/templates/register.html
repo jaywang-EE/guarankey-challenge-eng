@@ -1,0 +1,31 @@
+{% extends "base_bootstrap.html" %}
+{% block content %}
+
+<div id = "login-container">
+  <h1>Create an Account</h1>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  <form action={{ url_for('auth.register') }} id="upload_form" method = "POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="form-group">
+      <label for = "username">Username:</label>
+      <input name = "username" type="username" class="form-control" id="username" aria-describedby="Username" placeholder="Username" required>
+    </div>
+    <div class="form-group">
+      <label for = "password">Password:</label>
+      <input name = "password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+    </div>
+    <input type="submit" value="Submit">
+    <input type="submit" value="Cancel" onclick="window.location.href='/';return false;">
+  </form>
+  <span id = "register">Already have an account? <a href="{{ url_for('auth.login') }}">Login here.</a></span>
+</div>
+
+{% endblock %}
