@@ -6,7 +6,7 @@ app = flask.Flask(__name__)
 db = pymysql.connect(
     user='root',
     password='testpass',
-    host='db',
+    host='localhost',#'db',
     database='challenge',
 )
 
@@ -19,3 +19,6 @@ def test():
             'result': result,
             'backend': 'python',
         })
+
+if __name__ == '__main__':
+    app.run(debug=True)
