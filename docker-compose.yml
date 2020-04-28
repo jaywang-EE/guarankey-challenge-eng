@@ -11,7 +11,7 @@ services:
             - ./db/sql:/docker-entrypoint-initdb.d
 
     backend:
-        build: backend-golang
+        build: backend-python
         links:
             - db
         ports:
