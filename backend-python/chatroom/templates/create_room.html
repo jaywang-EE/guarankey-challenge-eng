@@ -1,0 +1,27 @@
+{% extends "base_bootstrap.html" %}
+{% block content %}
+
+<div id = "login-container">
+  <h1>Create a Room</h1>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  <form action={{ url_for('chat.create') }} id="upload_form" method = "POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="form-group">
+      <label for = "roomname">RoomName:</label>
+      <input name = "roomname" type="roomname" class="form-control" id="roomname" aria-describedby="Roomname" placeholder="Roomname" required>
+    </div>
+    <input type="submit" value="Submit">
+    <input type="submit" value="Cancel" onclick="window.location.href='/';return false;">
+  </form>
+  <!-- <span id = "cancel"><a href="{{ url_for('index') }}">cancel</a></span> -->
+</div>
+
+{% endblock %}

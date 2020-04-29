@@ -1,9 +1,92 @@
-
 {% extends "base_bootstrap.html" %}
+
+{% block meta %}
+<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script>
+  var socket;
+  $(document).ready(function(){
+    socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+      socket.emit('connected', {});
+    });    
+    socket.on('status', function(data) {
+      $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+      $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    });
+    socket.on('message_init', function(data) {
+      $('#chat').val($('#chat').val() + data.msg + '\n');
+      $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    });
+    socket.on('message', function(data) {
+      $('#chat').val($('#chat').val() + data.msg + '\n');
+      $('#chat').scrollTop($('#chat')[0].scrollHeight);
+      // recieve and comfirm messages
+      socket.emit('comfirm', {uuid: data.uuid});
+    });
+
+    socket.on('user_change', function(data) {
+      $("#users").empty();
+      console.log(data.members)
+      data.members.forEach(function (arrayItem) {
+        $("#users").append( "<div class='col-4 col-lg-12 text-center'>"+ arrayItem +"</div>" )
+        console.log(arrayItem)
+      });
+    });
+
+    $('#text').keydown(function(e) {
+      var code = (e.keyCode ? e.keyCode : e.which);
+      if (code == 13) {
+        text = $('#text').val();
+        $('#text').val('');
+        console.log("sent "+text);
+        socket.emit('text', {msg: text});
+      }
+    });
+
+  });
+
+  function leave_room() {
+    socket.emit('left', {});
+    socket.disconnect();
+  }
+</script>
+{% endblock %}
+
 {% block content %}
 
 <div id = "login-container">
-  <h1>chatroom</h1>
+  <div class="text-center">
+    <h1>welcome to chatroom: {{curr_room.room_name}}</h1>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-2">
+      <div class="row">
+        <div class="col-12 text-center">Users</div>
+      </div>
+      <div class="row" id="users">
+      </div>
+    </div>
+    <div class="col-12 col-lg-10">
+      <textarea readonly="readonly" id="chat" style="width: 100%" rows="20">{{init_message}}</textarea>
+    </div>
+  </div>
+  
+  <br>
+  
+  <div class="row">
+    <div class="col-12 offset-lg-2 col-lg-10">
+      <input id="text" style="width: 100%" placeholder="Enter your message here">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 offset-lg-2 col-lg-10">
+      <a href="{{ url_for('index') }}" onclick="leave_room();">Leave this room</a>
+    </div>
+  </div>
+
 </div>
+
 
 {% endblock %}

@@ -1,6 +1,5 @@
 from chatroom import db
 from flask_login import UserMixin
-# from chatroom import login_manager
 
 class User(UserMixin, db.Model):
     __table__ = db.Model.metadata.tables['user_']

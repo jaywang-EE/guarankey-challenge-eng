@@ -36,3 +36,13 @@ class RegisterForm(Form):
         ],
         widget=widgets.PasswordInput(),
     )
+
+class RoomCreateForm(Form):
+    roomname = simple.StringField(
+        validators=[
+            validators.DataRequired(message='房間名不能为空.'),
+            validators.Length(min=2, message='房間名长度必须大于%(min)d'),
+        ],
+        widget=widgets.TextInput(),
+
+    )

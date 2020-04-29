@@ -22,8 +22,8 @@ def load_user(user_id):
 def unauthorized():
     return redirect(url_for('auth.login'))
 
-@login_required
 @auth.route('/logout', methods=['GET', "POST"],endpoint='logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))

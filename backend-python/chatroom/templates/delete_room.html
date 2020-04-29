@@ -1,0 +1,14 @@
+{% extends "base_bootstrap.html" %}
+{% block content %}
+
+<div id = "login-container">
+  <h1>Are you sure you want to delete Room: {{curr_room.room_name}} ?</h1>
+  <form action={{ url_for('chat.delete', rid=curr_room.room_id) }} id="delete_form" method = "POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="submit" value="Submit">
+    <input type="submit" value="Cancel" onclick="window.location.href='/';return false;">
+  </form>
+  <!-- <span id = "cancel"><a href="{{ url_for('index') }}">cancel</a></span> -->
+</div>
+
+{% endblock %}

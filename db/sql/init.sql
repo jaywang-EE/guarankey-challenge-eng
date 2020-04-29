@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS user_
 );
 
 
-
 CREATE TABLE IF NOT EXISTS message
 (
   message_id INT (10) NOT NULL AUTO_INCREMENT,
@@ -38,6 +37,7 @@ CREATE TABLE IF NOT EXISTS room
   room_id INT (10) NOT NULL AUTO_INCREMENT,
   room_uuid varchar(50),
   room_name varchar(50),
+  room_owner_id INT(10) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(room_id)
 );

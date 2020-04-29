@@ -3,8 +3,26 @@
 {% block content %}
 
 <div id = "login-container">
-  <h1>Home</h1>
-  <a href="{{ url_for('chat.chat') }}">chatroom</a>
+  <h1>Chatrooms</h1>
+
+  {% if rids %}
+  <h1>Have rooms:</h1>
+  {% else %}
+  <h1>No room, add one</h1>
+  {% endif %}
+
+  <ul>
+  {% for room in rooms %}
+    <li>
+      <a href="{{ url_for('chat.chat', rid=room.room_id) }}">chatroom {{room.room_name}} </a>
+      {% if room.room_owner_id == current_user.user_id %}
+      <a href="{{ url_for('chat.delete', rid=room.room_id) }}">(delete)</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+
+  <a href="{{ url_for('chat.create') }}"><h3>Create Room</h3></a>
 </div>
 
 {% endblock %}
