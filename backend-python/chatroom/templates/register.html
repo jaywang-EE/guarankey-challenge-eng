@@ -22,8 +22,15 @@
       <label for = "password">Password:</label>
       <input name = "password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
     </div>
-    <input type="submit" value="Submit">
-    <input type="submit" value="Cancel" onclick="window.location.href='/';return false;">
+
+    <div class="form-row">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary" onclick="window.location.href='/';return false;">Cancel</button>
+      </div>
+    </div>
   </form>
   <span id = "register">Already have an account? <a href="{{ url_for('auth.login') }}">Login here.</a></span>
 </div>

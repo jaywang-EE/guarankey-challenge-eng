@@ -8,43 +8,52 @@ from flask_sqlalchemy import SQLAlchemy
 import uuid
 
 from chatroom import create_app
-from chatroom.request_hook import *
 
 from chatroom.utils.sql import generate_connection
 
 from sqlalchemy import and_
 
+db = generate_connection()
+
+import os
+with db.cursor() as cur:
+    #print(os.listdir(".."))
+    file = open("init.sql", "r")
+    querys = file.read()
+    file.close()
+    for query in querys.split(";"):
+        if not query.strip():
+            continue
+        print("query", query.strip())
+        cur.execute(query)
+
 app = create_app()
-#app.config['TESTING'] = False
+# for eventlet
+# import eventlet
+# eventlet.monkey_patch()
+socketio = SocketIO(app, async_mode='eventlet')
 
-# for chatroom
+db = SQLAlchemy(app)
 
-db = SQLAlchemy(app)#generate_connection()
-
-"""
 @app.route('/test')
 def test():
-    with db.cursor() as cur:
-        cur.execute("SELECT col FROM test;")
-        result, = cur.fetchone()
-        return flask.jsonify({
-            'result': result,
-            'backend': 'python',
-        })
-"""
-from chatroom import models
+    return flask.jsonify({
+        'backend': 'python',
+    })
 
-socketio = SocketIO(app, async_mode='eventlet')
+from flask_wtf.csrf import generate_csrf
+
+@app.after_request
+def after_request(response):
+    csrf_token = generate_csrf()
+    response.set_cookie("csrf_token", csrf_token)
+    return response
+
+from chatroom import models
 
 @app.route('/')
 def index():
     rids = None
-    """
-    with db.cursor() as cur:
-        cur.execute("SELECT room_id, room_name FROM room;")
-        rids = cur.fetchall()#[cols[0] for cols in cur.fetchall()]
-        #print(rids)
-    """
     rooms = db.session.query(models.Room).all()
     return render_template('index.html', rooms=rooms)
 
@@ -140,6 +149,5 @@ def left(message):
     emit('user_change', {'members': members}, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0')
-    #app.run(debug=True)
+    socketio.run(app, async_mode='eventlet', port=8000, host='0.0.0.0')
 

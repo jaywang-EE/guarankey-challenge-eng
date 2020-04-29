@@ -4,7 +4,7 @@ def generate_connection():
     return pymysql.connect(
         user='root',
         password='testpass',
-        host='localhost',# 'db',
+        host= 'db',
         database='challenge',
     )
 
